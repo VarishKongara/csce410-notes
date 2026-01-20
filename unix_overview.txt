@@ -1,0 +1,96 @@
+UNIX Operating System
+The operating system is a software that manages the computer hardware and software resources
+
+What does an operating system do?
+The operating system interfaces between the application program and the hardware.
+The OS allows multiple users to run programs.
+The OS supports multitasking:
+- Multiple processes can run simultaneously
+- A process is an executing instance of a program
+- A process consists of multiple execution units called threads.
+
+The operating systems consists of the kernel and other software including system utilities, applications, shells, libraries of common functions, etc.
+The shell is a special application that provides an interface for running other applications.
+The interface to the kernel is a layer of software called the system calls.
+Libraries of common functions are built on top of the system call interface.
+
+Users
+When we log in to a UNIX system, the system looks up our login name in its password file, usually the file /etc/passwd.
+An entry in the password file, contains seven colon-separated fields:
+e.g.
+sar:x:205:105:Stephen Rago:/home/sar:/bin/ksh
+1. login name
+2. encrypted password
+3. numeric user ID (205)
+4. numeric group ID (105)
+5. comment field
+6. home directory (/home/sar)
+7. shell program (/bin/ksh)
+
+User ID
+The user ID is a numerica value that identifies a user to the system. It is assigned by the system administrator when the login name is assigned, we cannot change it.
+User ID 0 is the called the root/superuser. This entry in the password file normally has the login name of root, and the special privileges of this user are called superuser privileges.
+
+Group ID
+A password file contains multiple entries that specify the same group ID.
+Groups collect users together into projects or departments. This allows the sharing or resources, such as filesm among members of the same group. There is also a group file that maps group names into numeric group IDs. The group files is usually /etc/group.
+
+File System
+The UNIX file system is a hierarchical arrangement of directories and files. Everything starts in the directory called root, whose name is the single character /.
+A directory is a file that contains directory entries. Each directory entry contains a filename along with a structure of information describing the attributes of the file.
+The attributes of a file are:
+- Type of file (regular file, directory)
+- Size of the file
+- Owner of the file
+- Permissions for the file
+
+Filename
+The names in a directory are called filenames.
+Two filenames are automatically created whenever a new directory is created:
+. (called dot)
+.. (called dot-dot)
+Dot refers to the current directory, and dot-dot refers to the parent directory. 
+Note: In the root directory, dot-dot is the same as dot.
+
+pathname
+A sequence of one or more filenames, separated by slashes and optionally starting with a slash, forms a pathname.
+A pathname that begins with a slash is called an absolute pathname; otherwise, it’s called a relative pathname.
+Relative pathnames refer to files relative to the current directory.
+The name for the root of the file system (/) is a special-case absolute pathname that has no filename component.
+
+File Descriptor
+File descriptors are small non-negative integers that the kernel uses to identify the files accessed by a process.
+Whenever it opens an existing file or creates a new file, the kernel returns a file descriptor that we use when we want to read or write the file.
+
+Input and output: stdin, stdout, and stderr
+All shells open three descriptors whenever a new program is run: standard input, standard output, and standard error.
+Most shells provide a way to redirect any or all of these three descriptors to any file.
+e.g., the following command executes ls with its standard output redirected to the file named file.list.
+ls > file.list
+Unbuffered I/O is provided by the functions open, read, write, lseek, and close. These functions all work with file descriptors
+
+Signals
+Used to for processes to talk to each other. Notify a process that an event occured.
+We have to be the owner of the other process or the superuser to send it a signal.
+
+System Calls
+All operating systems provice service points through which progras request services from the kernel.
+
+Privilege Modes (lower)
+User Mode
+- Access to memeory is limited
+- Cannot execute some instructions
+- Cannot disable interrupts
+- Cannot change arbitrary processor state
+- Cannot access memory management units
+Transition from user mode to system mode can only happen via well defined entry points, e.g. (system calls)
+
+Privilege Modes (higher)
+System mode
+- Can execute any instruction
+- Can access any memory locations, e.g., accessing hardware devices
+- Can enable and disable interrupts
+- Can change privileged processor state
+- Can access memory management units
+- Can modify registers for various descriptor tables
+

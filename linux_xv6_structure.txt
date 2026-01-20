@@ -1,0 +1,15 @@
+What is the Linux Kernel?
+Kernel is the central component that manages the hardware: memory, processes, cpu time, device, and i/o, etc
+
+A single image contains core linux functinos and interfaces to hardware supports different architectures.
+- x86 - x64
+- ARM
+- RISC-V
+Can be extended with modules, usually as device drivers
+
+Xv6 Code Structure
+kernel: core OS functionality
+user: User space programs
+mkfs: File system creation
+conf: booting and build configuration
+
