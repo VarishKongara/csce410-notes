@@ -1,0 +1,53 @@
+System Call
+System call is a mechanism that allows user space programs to request services from the kernel space.
+The set of system calls are APIs for the Linux kernel that provide a interface for processes to access resources and hardware withotu knowing low-level details
+
+Application -> Library function -> Kernel -> System Call
+
+RISC-V Assembly
+Stack Pointer: sp
+Frame Pointer (Functions): fp
+Registers:
+- a0 - a6 used to hold function arguments
+- a7 is the system call number register (ID)
+- a0 holds the return value
+- zero holds the value zero
+
+System Call (Trap into the kernel): 
+ecall - looks at t0 or a7 depending on abi for system call number
+Bit Manipulation:
+- slli - shift left
+
+Trap into the kernel
+1. System calls (planned)
+2. Exception (error)
+3. Interrupt (event)
+
+Stub
+Template to generate a system call
+
+System calls execution
+- syscall.c
+- syscall.h
+- sysproc.c
+- usys.S
+- user.h
+
+To add a new Hello World Call
+- In syscall.c add a new entry [SYS_hello] sys_hello,
+- In syscall.c add function prototype extern int sys_hello(void)
+- In syscall.h add a new entry #define SYS_hello 22,
+- Implement in sysproc.c, 
+uint64 sys_hello(void) {
+    cprintf(“Hello world\n”);
+    return 12;
+}
+- In usys.S, create an interface to allow user programs to call this system call
+.global syshello
+syshello:
+    li a7, SYS_hello
+    ecall
+    ret
+- Add a function prototype that the user program will call. int hello(void);
+- In usys.pl, and entry("sys_hello")
+- In user.h, int sys_hello(int arg1);
