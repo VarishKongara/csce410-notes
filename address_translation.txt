@@ -1,0 +1,92 @@
+Address Spaces
+Multiprocessing: computer runs multiple processes at the same time
+Each process has its own memory & CPU state (Address Space)
+Cannot see the state of each other
+
+Multiprocessing: The Reality
+Each program has:
+- Stack
+- Heap
+- Data
+- Code
+- Saved Registers
+Each context switch needs to switch the CPU registers to the saved registers
+
+Physical Addressing
+The main memory of a computer is organized as an array of M contiguous byte-sized cells.
+When the CPU executes an instruction it generates a physical address and passed it to main memory over the memory bus.
+The main memory fetches the 4-byte word starting at physical address 4 and returns it to the CPU, whih stores it in a register
+Early PCs, digital signal processors, embedded microcontrollers, devices, and Cray supercomputers using physical addressing
+
+Virtual Addressing
+The CPU accesses the main memory by generating a virtual address, which is converted to the appropriate physical address before being sent to main memory
+Address translation converts a virtual address to a physical address.
+Like exception handling, address translation requires cooperation between the CPU and the OS.
+Dedicated hardware on the CPU chip (MMU) translates virtual addresses on the fly, using a lookup table stored in main memory whose contents are managed by the operating system.
+
+Physical vs Virtual Addressing
+Physical address space: address space supported by the hardware
+Starts at address 0, and ends at the address MAXsys
+Logical/virtual address space: address space view of a process
+Starts at address 0, going to address MAXprog
+Where do addresses come from?
+
+Address Spaces
+An address space is an ordered set of nonnegative integer addresses
+In a system with a virtual memory, the CPU generates virtual addresses from an address space of N = 2^n (n-bit address space) addresses called the virtual address space: {0,1,2,...,N-1}
+The size of an address spae is characterized by the number of bits that are needed to represent the largest address
+Modern systems typically support either 32-bit or 64-bit virtual address spaces.
+
+Simple Memory Management Schemes
+Allocate a partition when a procoess is admitted into the system
+Allocate a contigous memory partition to the process
+The OS keeps track of:
+Full-blocks
+Empty-blocks("holes")
+
+Linux Address Space
+Processes are managed by a shared kernel space
+The kernel is not a separate process, but rather runs as part of a user process
+In x86-64 Linux:
+Kernel: shared space with shared memory addresses
+User space: Even the same memory addresses point to different data in different processes
+
+Virtual Memory as a Tool for caching
+Virtual memory is organized as an array of N contiguous byets stored on disk.
+Each byte has a unique virtual address that serves as an index into the array.
+The contents of the array on disk are cached in main memory.
+The data on disk is partitioned into blocks that serve as the transfer units between the disk and the main memory
+VM systems handle this by partitioning the virtual memory into fixed-size blocks called virtual pages (VPs).
+
+Page table
+A page table is a data structure used in virtual memory systems to store mapping information between virtual addresses and physical addresses in computer memory.
+Page tables are stored in main memory
+The virtual memory uses the PT to determine if a virtual page is cached in DRAM
+If cached in DRAM, the system finds which physical page it is cached in. Otherwise it finds where the virtual page is stored on disk, select a victim page in physical memory, and copy the virtual page from disk to DRAM, replacing the victim page.
+The page table contains page table entries (PTEs).
+Each page in the virtual address space has a PTE at a fixed offset in the page table. 
+Each PTE consists of a valid bit and an n-bit address field. The valid bit indicates whether the virtual page is currently cached in DRAM.
+
+Page fault
+If you miss a page (not in dram when looking up), then you have a page fault
+A VP will be selected and it will be replaced with a copy of the needed VP from disk
+After the page fault handler restarts the faulting instruction, iw will read the word from memory normally, without generating an exception.
+
+Process address space
+The operating systems provide a separate page table, and thus a separate virtual address space, for each process
+Notice that multiple virtual pages can be mapped to the same shared physical page
+
+Memory protection
+A user process should not modify its read-only code section. Nor should it be allowed to read or modify any of the code and data structures in the kernel.
+Each PTE has three permissions bits. The SUP bit indicates whether processes must be running in kenel (supervisor) mode to access the page
+Processes running in kernel mode can access any page
+Processes runnin user mode are only allowed to access pages with SUP is 0
+
+Address translation with a page table
+1. The processor generates a virtual address and sends it to the MMU
+2. The MMU generates the PTE address and requests it from the cache/main memory
+3. The cache/main memory returns the PTE to the MMU
+4. The MMU uses the VPN to select the appropriate PTE e.g. VPN0 selects PTE0, VPN1 selects PTE1 etc.
+5. The MMU constructs the physical address and sends it to the cache/main memory
+6. The cache/main memory returns the requested data word to the processor
+
