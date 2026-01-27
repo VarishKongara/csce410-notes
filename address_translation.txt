@@ -90,3 +90,31 @@ Address translation with a page table
 5. The MMU constructs the physical address and sends it to the cache/main memory
 6. The cache/main memory returns the requested data word to the processor
 
+Speed Up Address Translation
+MMU needs to refer to PTE to translate addresses
+Cache of PTEs inside TLB
+
+One Level Page Table
+If we had 32-bit address space, 4 KB pages, and a 4-Byte PTE, thene we would need a 4 MB page table resident in memory at all times, even if applications referenced only a samll chunk of the virtual address space
+12 bytes for VPO, then 20 bits for VPN
+
+Multi-Level Page Tables
+Consider a 32-bit virtual address space partitioned into 4 KB pages, with page table entries that are 4 bytes each
+Suppose the virtual address space has the following form:
+
+The first 2 K pages of memory are allocated for code and data
+The next 6 K pages are allocated for code and data
+The next 1,023 pages are also unallocated
+The next page is allcoated for the user stack
+
+Each PTE in the level 1 table is responsible for mapping a 4 MB chunk of the virtual address space.
+Each chunk consists of 1,024 contiguous pages. e.g. PTE 0 maps the first chunk, PTE 1 the next chunk etc. 
+Given that the address space is 4 GB (2^32), 1,024 PTEs are sufficient to cover the entire space!
+If every page in chunk i is unallocated, then level 1 PTE i is null.
+Each PTE in a level 2 page table is responsible for mapping a 4-KB page of virtual memory. Notice that with 4-byte PTEs, each level 1 and level 2 page table is 4 kilobytes, which conveniently is the same size as a page.
+Each PTE in the level 1 table is responsible for mapping a 4 MB chunk of the virtual address space.
+Each chunk consists of 1,024 contiguous pages. e.g. PTE 0 maps the first chunk, PTE 1 the next chunk etc. 
+Given that the address space is 4 GB (232), 1,024 PTEs are sufficient to cover the entire space!
+If every page in chunk i is unallocated, then level 1 PTE i is null.
+Each PTE in a level 2 page table is responsible for mapping a 4-KB page of virtual memory. Notice that with 4-byte PTEs, each level 1 and level 2 page table is 4 kilobytes, which conveniently is the same size as a page.
+
