@@ -1,0 +1,8 @@
+Paging
+Memory allocated in page frames
+
+Physical Address
+f - frame number (fmax frames)
+o - frame offset (0max bytes/frame)
+
+

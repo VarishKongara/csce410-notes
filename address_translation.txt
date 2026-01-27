@@ -118,3 +118,9 @@ Given that the address space is 4 GB (232), 1,024 PTEs are sufficient to cover t
 If every page in chunk i is unallocated, then level 1 PTE i is null.
 Each PTE in a level 2 page table is responsible for mapping a 4-KB page of virtual memory. Notice that with 4-byte PTEs, each level 1 and level 2 page table is 4 kilobytes, which conveniently is the same size as a page.
 
+Address Space: 16kb = 2^4 x 2^10 = 2^14
+so 14 bits for address
+Page Size: 4kb = 2^2 x 2^10 = 2^12
+so 12 bits vpo and 2 bits vpn
+
+
