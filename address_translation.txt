@@ -123,4 +123,14 @@ so 14 bits for address
 Page Size: 4kb = 2^2 x 2^10 = 2^12
 so 12 bits vpo and 2 bits vpn
 
+PFN: shifted to page position
+PPM + Offset
+Add offset: 
+Shift Left the Page table entry by number of offset bits
+Then Or the together to add the shifted address and the offset bits
+
+Word - entire address, e.g. 64-bit
+Byte - 8-bit
+Nibble - 4-bit
+
 

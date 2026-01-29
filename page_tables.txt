@@ -5,4 +5,71 @@ Physical Address
 f - frame number (fmax frames)
 o - frame offset (0max bytes/frame)
 
+Virtual Address
+A virtual address is a pair (p,o)
+p - page number (pmax pages)
+0 - page offset (omax bytes/pages)
+Virtual address = omax x p + o
+
+Page Mapping
+1:1 mapping of page-aligned virtual addresses to physcial frames
+Imagin a big ole' table (BOT)
+- # of table entries = # of virtual page addresses / page size
+Address translation is a 2-step process
+- Map virtual page onto physical frame (using BOT)
+- Add offset within the page
+
+Pages map to frames
+Pages are contiguous in virtual address space
+But pages are arbitrarily located  in physical memory
+Not all pages are mapped
+
+Page Table Details
+1 table per process
+Part of process metadata/state
+Contents
+- Flags: valid bit, dirty bit, clock/reference bit
+- Physical frame number
+
+Performance Issues with Paging
+Problem - VM reference requires 2 memory references
+- One access to get the page table entry
+- One acces to get the data
+Page table can be very large
+- For a machine with 64-bit addresses and 1024-byte pages, what is the size of a page table? 2^64 / 1024
+
+Dealing with Large Tables
+Add additional levels of page table
+- Sub-dividing page number into k parts
+- Create a "tree" of page tables
+
+32-bit Page Table (x86)
+In a multi level approach
+Each table is exactly one page
+Two-level of page tables
+- Page directory table (level-1)
+- Page table (level-2)
+CR3 (a control register):
+stores the physical base of the page directory table
+
+Page Table Entries (PTEs)
+Fized bits for the PFN (Page frame number) of the next PTs or Pages
+- Physical address = PFN x (Page size)
+The remaining bits are used for flags, or reserved for OS use
+- P (Present bit): Is the page present or not
+- R/W (Read or Write): Is the page read-only or readable/writable
+- U/S (User or Supervisor) User or Kernel Page?
+A (Access bit), D(Dirty bit): Is the page recently used or modified?
+
+32-bit Paging Examples
+VA: 0xF1084150
+What are the offset bits?
+Page Directory: 10, Page-Table Offset: 10, Page Offset: 15
+What are the virtual address bits?
+VA: 1111 0001 0000 1000 0100 0001 0101 0000
+How many levels of page tables exist?
+2
+
+VPN1: 11 1100 0100 => 3C4
+VPN2: 00 1000 0100 => 084
 
